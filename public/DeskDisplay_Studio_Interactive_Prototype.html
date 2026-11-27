@@ -1,0 +1,1322 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DeskDisplay Studio · 现代深色磨砂硬核风 完整交互设计稿 (V3.2)</title>
+<style>
+:root {
+  --bg-dark: #090D14;
+  --bg-card: rgba(17, 24, 39, 0.75);
+  --bg-card-solid: #111827;
+  --bg-panel: #0d131f;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+  --cyan: #38bdf8;
+  --cyan-glow: rgba(56, 189, 248, 0.25);
+  --amber: #f59e0b;
+  --amber-glow: rgba(245, 158, 11, 0.25);
+  --green: #10b981;
+  --rose: #f43f5e;
+  --purple: #c084fc;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft YaHei", sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font: 14px/1.6 var(--font-sans);
+  color: var(--text-main);
+  background: var(--bg-dark);
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+}
+button, input, select { font: inherit; color: inherit; }
+button, select { cursor: pointer; }
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  color: var(--text-main);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all .18s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--line-strong);
+  color: #fff;
+}
+button:active { transform: scale(0.97); }
+button.primary {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
+}
+button.primary:hover {
+  background: #0ea5e9;
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+}
+button.small { padding: 4px 10px; font-size: 12px; border-radius: 6px; }
+button.ghost { background: transparent; border-color: transparent; color: var(--text-muted); }
+button.ghost:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+button.active {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: var(--cyan);
+}
+button.danger {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.4);
+  color: #fb7185;
+}
+button.danger:hover { background: rgba(244, 63, 94, 0.25); color: #fff; }
+input, select {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--text-main);
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 2px var(--cyan-glow);
+}
+.app-container {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  min-height: 100vh;
+}
+/* Sidebar */
+.sidebar {
+  background: #0b101b;
+  border-right: 1px solid var(--line);
+  padding: 22px 14px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 20;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px 24px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  border-bottom: 1px solid var(--line);
+}
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #0284c7, #6366f1);
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 800;
+  box-shadow: 0 0 15px rgba(2, 132, 199, 0.4);
+}
+.nav-group-title {
+  padding: 16px 12px 6px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+}
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: 9px;
+  margin: 2px 0;
+  font-size: 13px;
+}
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+}
+.nav-btn.active {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.25);
+  color: var(--cyan);
+  font-weight: 600;
+}
+.nav-btn .icon { font-size: 16px; width: 20px; text-align: center; }
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+/* Topbar */
+.topbar {
+  height: 64px;
+  background: rgba(11, 16, 27, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 15;
+}
+.badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+}
+.badge-tag.ok {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #34d399;
+}
+.badge-tag.warn {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: #fbbf24;
+}
+.badge-tag.cyan {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: var(--cyan);
+}
+.badge-tag .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+/* Content */
+main {
+  padding: 28px 32px 64px;
+  max-width: 1560px;
+  margin: 0 auto;
+}
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.heading h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.4px; }
+.heading p { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+.panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px;
+}
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.grid-cards.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* Hardware Bezel */
+.hardware-bezel {
+  background: linear-gradient(180deg, #2b3240, #141a24 50%, #0c1017);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.25);
+  position: relative;
+  transition: all .25s ease;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+}
+.bezel-screen {
+  background: #000;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.hardware-logo {
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  font-family: var(--font-mono);
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+.hardware-port {
+  position: absolute;
+  left: -4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background: #252e3d;
+  border-radius: 2px 0 0 2px;
+}
+/* Dialog Modal */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 15, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 24px;
+}
+.dialog-overlay[hidden] { display: none; }
+.modal-window {
+  background: #0f1623;
+  border: 1px solid var(--line-strong);
+  width: 820px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 16px;
+  padding: 26px;
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+}
+.modal-window.narrow { width: 480px; }
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+/* Toast */
+.toast-bar {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  background: #111b2b;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 20px;
+  z-index: 200;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all .2s ease;
+}
+.toast-bar[hidden] { display: none; }
+/* Table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.data-table th {
+  text-align: left;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--line);
+}
+.data-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+}
+/* Creator Studio 3-column layout */
+.studio-grid {
+  display: grid;
+  grid-template-columns: 240px minmax(300px, 1fr) 280px;
+  gap: 18px;
+  min-height: 580px;
+}
+.canvas-stage {
+  background-color: #070a10;
+  background-image: radial-gradient(rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 24px;
+  position: relative;
+}
+.widget-gizmo {
+  position: absolute;
+  cursor: move;
+  transition: box-shadow .15s ease;
+}
+.widget-gizmo.selected {
+  outline: 2px solid var(--cyan);
+  outline-offset: 1px;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+.gizmo-handle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border: 1.5px solid var(--cyan);
+  border-radius: 2px;
+}
+.gizmo-coord-tag {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cyan);
+  color: #090d14;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* Utilities */
+.row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.between { justify-content: space-between; }
+.gap-top { margin-top: 18px; }
+.gap-bottom { margin-bottom: 18px; }
+.muted { color: var(--text-muted); font-size: 12px; }
+.mono { font-family: var(--font-mono); }
+.small { font-size: 12px; }
+.tabular { font-variant-numeric: tabular-nums; }
+@media (max-width: 1080px) {
+  .app-container { grid-template-columns: 76px 1fr; }
+  .sidebar .nav-btn span:not(.icon), .brand strong, .nav-group-title, .sidebar-bottom { display: none; }
+  .sidebar .nav-btn { justify-content: center; padding: 12px; }
+  .studio-grid { grid-template-columns: 1fr; }
+  .grid-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- 左侧主导航栏 -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo-icon">D</div>
+      <strong>DeskDisplay</strong>
+    </div>
+
+    <div class="nav-group-title">核心模块</div>
+    <button class="nav-btn active" id="btn-overview" onclick="goPage('overview')">
+      <span class="icon">▣</span><span>屏幕概览</span>
+    </button>
+    <button class="nav-btn" id="btn-library" onclick="goPage('library')">
+      <span class="icon">▦</span><span>我的资源</span>
+    </button>
+    <button class="nav-btn" id="btn-discover" onclick="goPage('discover')">
+      <span class="icon">◇</span><span>发现市场</span>
+    </button>
+    <button class="nav-btn" id="btn-creator" onclick="goPage('creator')">
+      <span class="icon">✎</span><span>创作者工作台</span>
+    </button>
+    <button class="nav-btn" id="btn-playlists" onclick="goPage('playlists')">
+      <span class="icon">☷</span><span>播放列表</span>
+    </button>
+
+    <div class="nav-group-title">硬件与系统</div>
+    <button class="nav-btn" id="btn-devices" onclick="goPage('devices')">
+      <span class="icon">▱</span><span>屏幕设置</span>
+    </button>
+    <button class="nav-btn" id="btn-diagnostics" onclick="goPage('diagnostics')">
+      <span class="icon">⊞</span><span>HID 硬件诊断</span>
+    </button>
+    <button class="nav-btn" id="btn-guide" onclick="goPage('guide')">
+      <span class="icon">◎</span><span>设计规划说明</span>
+    </button>
+
+    <div class="sidebar-bottom">
+      <div class="row between gap-bottom">
+        <span class="muted mono">V3.2 原型</span>
+        <button class="small" onclick="exportPrototypeData()">导出 JSON</button>
+      </div>
+      <div class="muted small">
+        DeskDisplay Studio · 交互设计稿
+      </div>
+    </div>
+  </aside>
+
+  <!-- 右侧内容主视口 -->
+  <div style="display:flex; flex-direction:column; min-width:0;">
+    <!-- 顶栏 -->
+    <header class="topbar">
+      <div class="row">
+        <span class="muted">控制台 /</span>
+        <strong id="crumb-title">屏幕概览</strong>
+        <span class="badge-tag cyan">高保真交互设计稿</span>
+      </div>
+
+      <div class="row">
+        <span id="top-device-pill" class="badge-tag ok"><i class="dot"></i> D92 Pro · 正常在线</span>
+        <button class="small" onclick="toggleTestPattern()">
+          <span id="test-pattern-btn-text">彩条校准测试</span>
+        </button>
+        <button class="small primary" onclick="syncAllDisplays()">
+          <span>同步硬件参数</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 动态主视图挂载区 -->
+    <main id="main-content"></main>
+  </div>
+</div>
+
+<!-- 弹窗容器 -->
+<div class="dialog-overlay" id="dialog" hidden></div>
+
+<!-- 悬浮通知气泡 -->
+<div class="toast-bar" id="toast" hidden></div>
+
+<script>
+// --- 核心模拟数据层 (Core Model) ---
+const baseDevices = [
+  { id: 'dev-1', name: 'D92 Pro 超宽主屏 #1', model: 'D92 Ultra-Wide', w: 960, h: 320, rot: 0, brightness: 85, fps: 60, online: true, running: true, activeTheme: 1, leaseToken: 'session-lease-01', temp: 34.2 },
+  { id: 'dev-2', name: 'D92 Mini 方形屏 #2', model: 'D92 Compact Square', w: 480, h: 480, rot: 0, brightness: 75, fps: 30, online: true, running: true, activeTheme: 4, leaseToken: 'session-lease-02', temp: 31.8 },
+  { id: 'dev-3', name: 'Sidecar 长条副屏 #3', model: 'DeskDisplay Sub', w: 1920, h: 462, rot: 0, brightness: 90, fps: 60, online: false, running: false, activeTheme: 2, leaseToken: null, temp: 28.5 }
+];
+
+let devices = structuredClone(baseDevices);
+let currentPage = 'overview';
+let activeDeviceId = 'dev-1';
+let testPatternActive = false;
+
+// 原生 Craft 主题与组件数据
+let themes = [
+  {
+    id: 1,
+    name: '深海生态水族箱 (Aquarium Craft)',
+    category: '生态景观',
+    desc: '动力学鱼群游弋、水中光斑焦散与气泡上升，支持水面点击投喂。',
+    ratio: '3:1',
+    props: { fishCount: 6, caustics: 0.7, bubbleSpeed: 1.2, showClock: true }
+  },
+  {
+    id: 2,
+    name: '金融脉动看板 (Wall Street Ticker)',
+    category: '金融行情',
+    desc: 'NVDA/AAPL/BTC 实时分时走势图、分时 K 线与动态涨跌幅波动。',
+    ratio: '3:1',
+    props: { symbol: 'NVDA', price: 138.25, change: '+3.61%' }
+  },
+  {
+    id: 3,
+    name: '霓虹律动与歌词 (Neon Beats)',
+    category: '音乐多媒体',
+    desc: '卡拉OK逐行高亮歌词流、黑胶黑胶转盘与 24 段跳动音频波形。',
+    ratio: '3:1',
+    props: { song: 'Midnight City', artist: 'M83' }
+  },
+  {
+    id: 4,
+    name: 'IN-14 辉光管时计 (Nixie Chrono)',
+    category: '精密时计',
+    desc: '经典琥珀暖色真空管数码管、玻璃反光质感与走时跳秒。',
+    ratio: '1:1',
+    props: { style: 'nixie', hue: 'amber', showSeconds: true }
+  },
+  {
+    id: 5,
+    name: '赛博硬件飞船机舱 (Rig Telemetry)',
+    category: '硬件监视',
+    desc: 'CPU/GPU 负荷仪表、显存温度、万兆网络实时 I/O 喷射流。',
+    ratio: '3:1',
+    props: { cpu: 34, gpu: 68, ram: 54 }
+  }
+];
+
+// 创作者工作台当前编辑的画布部件
+let studioWidgets = [
+  { id: 'w1', type: 'aquarium', title: '生态水族箱', x: 0, y: 0, w: 100, h: 100, zIndex: 1, visible: true, locked: true },
+  { id: 'w2', type: 'clock', title: '环境悬浮时钟', x: 70, y: 10, w: 25, h: 40, zIndex: 2, visible: true, locked: false }
+];
+let selectedWidgetId = 'w2';
+let studioRatio = '3:1';
+let studioZoom = 0.75;
+let studioSnap = true;
+
+// 播放列表数据
+let playlists = [
+  { id: 'pl-1', name: '桌面日常轮播', targetDevice: 'dev-1', items: [{ themeId: 1, duration: 60 }, { themeId: 2, duration: 30 }, { themeId: 3, duration: 45 }], playing: true, atIndex: 0 },
+  { id: 'pl-2', name: '夜间沉浸模式', targetDevice: 'dev-2', items: [{ themeId: 4, duration: 120 }, { themeId: 1, duration: 60 }], playing: false, atIndex: 0 }
+];
+
+// --- 工具函数 ---
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const getActiveDev = () => devices.find(d => d.id === activeDeviceId) || devices[0];
+const getTheme = id => themes.find(t => t.id === Number(id)) || themes[0];
+
+function showToast(msg) {
+  const el = $('#toast');
+  el.innerHTML = `<span>✓</span><span>${esc(msg)}</span>`;
+  el.hidden = false;
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => el.hidden = true, 3000);
+}
+
+function openModal(html, narrow = false) {
+  const el = $('#dialog');
+  el.innerHTML = `<div class="modal-window ${narrow ? 'narrow' : ''}">${html}</div>`;
+  el.hidden = false;
+}
+
+function closeModal() {
+  $('#dialog').hidden = true;
+  $('#dialog').innerHTML = '';
+}
+
+// 页面导航切换
+function goPage(pageId) {
+  currentPage = pageId;
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+  const targetBtn = $(`#btn-${pageId}`);
+  if (targetBtn) targetBtn.classList.add('active');
+
+  const titles = {
+    overview: '屏幕概览与多屏拓扑',
+    library: '我的资源库',
+    discover: 'Craft 主题生态市场',
+    creator: '可视化创作者工作台',
+    playlists: '多屏播放列表',
+    devices: '屏幕硬件设置',
+    diagnostics: 'HID 通信协议与链路诊断',
+    guide: '完整界面规划说明'
+  };
+  $('#crumb-title').textContent = titles[pageId] || '控制台';
+  renderView();
+  window.scrollTo(0, 0);
+}
+
+// --- 渲染路由 ---
+function renderView() {
+  const routes = {
+    overview: renderOverview,
+    library: renderLibrary,
+    discover: renderDiscover,
+    creator: renderCreator,
+    playlists: renderPlaylists,
+    devices: renderDevices,
+    diagnostics: renderDiagnostics,
+    guide: renderGuide
+  };
+  $('#main-content').innerHTML = (routes[currentPage] || renderOverview)();
+  initDynamicCanvases();
+}
+
+// --- 视图 1：屏幕概览 (Overview) ---
+function renderOverview() {
+  const onlineCount = devices.filter(d => d.online).length;
+  const dev = getActiveDev();
+
+  return `
+    <div class="heading">
+      <div>
+        <h1>物理屏幕与多设备拓扑管理</h1>
+        <p>独立配置每一台 D92 副屏，硬件级实时参数调优与状态监视</p>
+      </div>
+      <div class="row">
+        <button onclick="addHotplugDevice()">＋ 模拟 D92 热插拔接入</button>
+      </div>
+    </div>
+
+    <!-- 顶部 3 项指标面板 -->
+    <div class="grid-cards gap-bottom">
+      <div class="panel">
+        <span class="muted mono">CONNECTED DISPLAYS</span>
+        <div style="font-size:32px; font-weight:700; color:#fff; margin:6px 0;">
+          ${onlineCount} <span class="muted" style="font-size:14px;">/ ${devices.length} 台</span>
+        </div>
+        <span class="muted">USB HID 物理接口 (VID 0x5548 / PID 0x1011)</span>
+      </div>
+
+      <div class="panel">
+        <span class="muted mono">ACTIVE OUTPUT PIPELINE</span>
+        <div style="font-size:32px; font-weight:700; color:var(--cyan); margin:6px 0;">
+          60 <span style="font-size:14px;">FPS</span>
+        </div>
+        <span class="muted">双缓冲区 0 丢帧硬件直推</span>
+      </div>
+
+      <div class="panel">
+        <span class="muted mono">SESSION LEASE LOCKS</span>
+        <div style="font-size:32px; font-weight:700; color:var(--green); margin:6px 0;">
+          0 <span style="font-size:14px;">冲突</span>
+        </div>
+        <span class="muted">多进程设备互斥隔离保护生效中</span>
+      </div>
+    </div>
+
+    <!-- 设备卡片列表 -->
+    <div class="grid-cards two">
+      ${devices.map(d => {
+        const th = getTheme(d.activeTheme);
+        const isSelected = d.id === activeDeviceId;
+        return `
+          <div class="panel" style="border-color:${isSelected ? 'rgba(56, 189, 248, 0.5)' : 'var(--line)'}; box-shadow:${isSelected ? '0 0 20px rgba(56, 189, 248, 0.15)' : 'none'}">
+            <div class="row between gap-bottom">
+              <div class="row">
+                <span class="badge-tag ${d.online ? 'ok' : 'warn'}">
+                  <i class="dot"></i> ${d.online ? '正常在线' : '离线待机'}
+                </span>
+                <strong>${esc(d.name)}</strong>
+              </div>
+              <div class="row">
+                <button class="small" title="顺时针旋转90°" onclick="rotateDevice('${d.id}')">↻ 旋转 ${d.rot}°</button>
+                <button class="small ${d.leaseToken ? 'active' : ''}" title="独占会话锁" onclick="toggleLease('${d.id}')">
+                  ${d.leaseToken ? '🔒 租约锁定' : '🔓 未加锁'}
+                </button>
+              </div>
+            </div>
+
+            <!-- 硬件边框微缩渲染视口 -->
+            <div style="display:flex; justify-content:center; padding:12px; background:rgba(0,0,0,0.5); border-radius:10px; margin-bottom:14px; overflow:hidden;">
+              <div class="hardware-bezel" style="transform:scale(${d.w > 1000 ? 0.38 : 0.55}); transform-origin:center center;">
+                <div class="hardware-port"></div>
+                <div class="hardware-logo">D92 STUDIO</div>
+                <div class="bezel-screen" style="width:${d.w}px; height:${d.h}px; opacity:${d.brightness/100};">
+                  ${testPatternActive ? renderTestPattern(d.w, d.h) : renderThemePreviewDOM(th, d.w, d.h)}
+                </div>
+              </div>
+            </div>
+
+            <!-- 底部调节滑块与操作 -->
+            <div class="row between">
+              <div class="row" style="flex:1;">
+                <span class="muted small mono">亮度: ${d.brightness}%</span>
+                <input type="range" min="10" max="100" value="${d.brightness}" style="flex:1; max-width:140px; accent-color:var(--amber);" oninput="updateBrightness('${d.id}', this.value)">
+              </div>
+              <div class="row">
+                <button class="small" onclick="quickApplyThemeModal('${d.id}')">更换主题</button>
+                <button class="small primary" onclick="openStudioWithTheme(${d.activeTheme}, '${d.id}')">在工作台中微调 →</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+// --- 视图 2：我的资源库 (Library) & 视图 3：发现市场 (Discover) ---
+function renderLibrary() { return renderThemeCatalog(false); }
+function renderDiscover() { return renderThemeCatalog(true); }
+
+function renderThemeCatalog(isMarket) {
+  return `
+    <div class="heading">
+      <div>
+        <h1>${isMarket ? 'Craft 原生主题生态市场' : '我的本地资源库'}</h1>
+        <p>${isMarket ? '为 D92 副屏深度优化的 60 帧动态生态主题、数据大屏与拟物时计' : '管理已收藏与下载的个性化主题与小部件'}</p>
+      </div>
+      <div class="row">
+        <button class="primary" onclick="goPage('creator')">＋ 新建空白主题</button>
+      </div>
+    </div>
+
+    <!-- 主题 Bento Grid -->
+    <div class="grid-cards">
+      ${themes.map(th => `
+        <div class="panel" style="display:flex; flex-direction:column; justify-content:space-between; padding:16px;">
+          <div>
+            <div class="row between gap-bottom">
+              <strong>${esc(th.name)}</strong>
+              <span class="badge-tag cyan">${th.category}</span>
+            </div>
+
+            <!-- 动态卡片预览 -->
+            <div style="height:140px; background:#000; border-radius:8px; border:1px solid var(--line); overflow:hidden; position:relative; margin-bottom:12px; cursor:pointer;" onclick="inspectThemeModal(${th.id})">
+              ${renderThemePreviewDOM(th, 480, 160)}
+              <div style="position:absolute; inset:0; background:rgba(0,0,0,0.3); opacity:0; transition:opacity .2s; display:flex; align-items:center; justify-content:center;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0">
+                <span class="small" style="background:#0284c7; color:#fff; padding:4px 10px; border-radius:20px;">点击全屏真机预览</span>
+              </div>
+            </div>
+
+            <p class="muted" style="line-height:1.5;">${esc(th.desc)}</p>
+          </div>
+
+          <div class="row between gap-top" style="border-top:1px solid var(--line); padding-top:12px;">
+            <span class="muted small mono">比例: ${th.ratio}</span>
+            <div class="row">
+              <button class="small" onclick="openStudioWithTheme(${th.id})">在工作台中编辑</button>
+              <button class="small primary" onclick="deployThemeModal(${th.id})">推送到副屏 →</button>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// --- 视图 4：创作者工作台 (Creator Studio) ---
+function renderCreator() {
+  const selectedWidget = studioWidgets.find(w => w.id === selectedWidgetId);
+  const canvasW = studioRatio === '3:1' ? 960 : studioRatio === '1:1' ? 480 : 960;
+  const canvasH = studioRatio === '3:1' ? 320 : studioRatio === '1:1' ? 480 : 540;
+
+  return `
+    <div class="heading">
+      <div>
+        <h1>可视化创作者工作台 (WYSIWYG Studio)</h1>
+        <p>支持多比例适配画布、自由拖拽定位、实时参数调节与多设备一键写回</p>
+      </div>
+      <div class="row">
+        <button class="small" onclick="studioSnap=!studioSnap; renderView();">${studioSnap ? '✓ 5% 网格吸附开' : '自由对齐'}</button>
+        <button class="small primary" onclick="deployStudioWidgetsToDevice()">应用到屏幕 1</button>
+      </div>
+    </div>
+
+    <!-- 三栏布局 -->
+    <div class="studio-grid">
+      <!-- 左栏：部件库与图层树 -->
+      <div class="panel" style="padding:14px; display:flex; flex-direction:column;">
+        <span class="nav-group-title" style="padding-top:0;">添加可用部件</span>
+        <div style="display:grid; gap:8px; margin-bottom:16px;">
+          <button class="small" style="justify-content:flex-start;" onclick="addWidgetToStudio('aquarium', '水族箱生态')">＋ 水族箱生态 (Canvas)</button>
+          <button class="small" style="justify-content:flex-start;" onclick="addWidgetToStudio('clock', 'IN-14 辉光管时钟')">＋ 辉光管真空管时计</button>
+          <button class="small" style="justify-content:flex-start;" onclick="addWidgetToStudio('stocks', '实时股票 K 线')">＋ 美股分时行情</button>
+          <button class="small" style="justify-content:flex-start;" onclick="addWidgetToStudio('telemetry', '硬件体征探针')">＋ 硬件传感器 HUD</button>
+        </div>
+
+        <span class="nav-group-title">图层顺序 (Z-INDEX)</span>
+        <div style="flex:1; overflow-y:auto; display:grid; gap:6px;">
+          ${studioWidgets.map((w, idx) => `
+            <div class="row between" style="padding:8px; border-radius:6px; background:${w.id === selectedWidgetId ? 'rgba(56, 189, 248, 0.15)' : 'rgba(0,0,0,0.3)'}; border:1px solid ${w.id === selectedWidgetId ? 'var(--cyan)' : 'var(--line)'}; cursor:pointer;" onclick="selectedWidgetId='${w.id}'; renderView();">
+              <span class="small font-mono">#${idx+1} ${w.title}</span>
+              <div class="row">
+                <button class="ghost small" title="隐藏/显示" onclick="event.stopPropagation(); toggleWidgetVisible('${w.id}')">${w.visible ? '👁' : '🚫'}</button>
+                <button class="ghost small" title="锁定" onclick="event.stopPropagation(); toggleWidgetLock('${w.id}')">${w.locked ? '🔒' : '🔓'}</button>
+                <button class="ghost small" title="删除" onclick="event.stopPropagation(); deleteWidget('${w.id}')">✕</button>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- 中栏：交互式画布舞台 -->
+      <div class="canvas-stage">
+        <!-- 比例切换栏 -->
+        <div style="position:absolute; top:12px; left:16px; display:flex; gap:6px; z-index:10;">
+          ${['3:1', '1:1', '16:9'].map(r => `
+            <button class="small ${studioRatio === r ? 'active' : ''}" onclick="studioRatio='${r}'; renderView();">${r}</button>
+          `).join('')}
+        </div>
+
+        <!-- 硬件边框与画布容器 -->
+        <div class="hardware-bezel" style="transform:scale(${studioZoom}); transform-origin:center center;">
+          <div class="hardware-port"></div>
+          <div class="hardware-logo">D92 STUDIO WORKBENCH</div>
+          <div class="bezel-screen" id="studio-canvas-root" style="width:${canvasW}px; height:${canvasH}px; position:relative;" onmousemove="onStudioCanvasMouseMove(event)" onmouseup="onStudioCanvasMouseUp()">
+            ${studioWidgets.filter(w => w.visible).map(w => {
+              const isSel = w.id === selectedWidgetId;
+              return `
+                <div class="widget-gizmo ${isSel ? 'selected' : ''}" style="left:${w.x}%; top:${w.y}%; width:${w.w}%; height:${w.h}%; z-index:${w.zIndex};" onmousedown="onStudioWidgetMouseDown(event, '${w.id}')">
+                  ${isSel ? `<div class="gizmo-coord-tag">X:${w.x}% Y:${w.y}% · ${w.w}×${w.h}%</div>` : ''}
+                  ${renderWidgetContent(w)}
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+
+      <!-- 右栏：属性检查器 -->
+      <div class="panel" style="padding:16px;">
+        <h3 class="gap-bottom">属性检查器 (Inspector)</h3>
+        ${selectedWidget ? `
+          <div style="display:grid; gap:12px;">
+            <div>
+              <span class="muted small mono">部件名称</span>
+              <input type="text" value="${esc(selectedWidget.title)}" style="width:100%; margin-top:4px;" onchange="selectedWidget.title=this.value; renderView();">
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div>
+                <span class="muted small mono">X 坐标 (%)</span>
+                <input type="number" value="${selectedWidget.x}" style="width:100%;" onchange="selectedWidget.x=Number(this.value); renderView();">
+              </div>
+              <div>
+                <span class="muted small mono">Y 坐标 (%)</span>
+                <input type="number" value="${selectedWidget.y}" style="width:100%;" onchange="selectedWidget.y=Number(this.value); renderView();">
+              </div>
+              <div>
+                <span class="muted small mono">宽度 (%)</span>
+                <input type="number" value="${selectedWidget.w}" style="width:100%;" onchange="selectedWidget.w=Number(this.value); renderView();">
+              </div>
+              <div>
+                <span class="muted small mono">高度 (%)</span>
+                <input type="number" value="${selectedWidget.h}" style="width:100%;" onchange="selectedWidget.h=Number(this.value); renderView();">
+              </div>
+            </div>
+
+            <div class="gap-top" style="border-top:1px solid var(--line); padding-top:12px;">
+              <span class="muted small mono">类型专属特性</span>
+              ${selectedWidget.type === 'aquarium' ? `
+                <div style="margin-top:8px;">
+                  <span class="muted small">鱼群密度 (1~12条)</span>
+                  <input type="range" min="2" max="12" value="6" style="width:100%; accent-color:var(--cyan);" oninput="showToast('水族箱鱼群参数已更新')">
+                </div>
+              ` : selectedWidget.type === 'clock' ? `
+                <div style="margin-top:8px;">
+                  <span class="muted small">时钟风格</span>
+                  <select style="width:100%; margin-top:4px;" onchange="showToast('已切换表盘预设')">
+                    <option>IN-14 辉光数码管</option>
+                    <option>复古机械翻页钟</option>
+                    <option>赛博数码 LED</option>
+                    <option>极简包豪斯腕表</option>
+                  </select>
+                </div>
+              ` : `
+                <p class="muted small" style="margin-top:8px;">该部件支持自适应全分辨率流式缩放。</p>
+              `}
+            </div>
+
+            <button class="small danger gap-top" onclick="deleteWidget('${selectedWidget.id}')">删除此图层部件</button>
+          </div>
+        ` : `
+          <p class="muted">在画布中点击选中任意小部件，即可在此修改其位置、尺寸与动效属性。</p>
+        `}
+      </div>
+    </div>
+  `;
+}
+
+// --- 视图 5：播放列表 (Playlists) ---
+function renderPlaylists() {
+  const pl = playlists[0];
+  return `
+    <div class="heading">
+      <div>
+        <h1>多屏自动轮播列表</h1>
+        <p>让多款动态生态壁纸、行情大屏与时钟在 D92 上定时丝滑切换</p>
+      </div>
+      <div class="row">
+        <button class="primary" onclick="showToast('已创建新轮播队列')">＋ 新建播放列表</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="row between gap-bottom">
+        <div>
+          <h2>${esc(pl.name)}</h2>
+          <span class="muted">输出目标：D92 Pro 超宽主屏 · ${pl.items.length} 个轮播项目</span>
+        </div>
+        <div class="row">
+          <button class="primary small" onclick="togglePlaylistPlaying(0)">${pl.playing ? '⏸ 暂停轮播' : '▶ 开始轮播'}</button>
+          <button class="small" onclick="stepNextPlaylistItem(0)">立即切换至下一项 →</button>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>顺序 / 内容</th>
+            <th>类型</th>
+            <th>推荐比例</th>
+            <th>停留秒数</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${pl.items.map((item, idx) => {
+            const th = getTheme(item.themeId);
+            return `
+              <tr>
+                <td><strong>${idx + 1}. ${esc(th.name)}</strong></td>
+                <td><span class="badge-tag cyan">${th.category}</span></td>
+                <td><span class="mono">${th.ratio}</span></td>
+                <td><input type="number" value="${item.duration}" style="width:70px;" onchange="item.duration=Number(this.value); showToast('停留时长已保存')"> 秒</td>
+                <td>
+                  <button class="small ghost" onclick="showToast('已调整顺序')">↑</button>
+                  <button class="small ghost" onclick="showToast('已调整顺序')">↓</button>
+                  <button class="small danger" onclick="showToast('已移除该项目')">移除</button>
+                </td>
+              </tr>
+            `;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+}
+
+// --- 视图 6：屏幕设置 (Devices) ---
+function renderDevices() {
+  const d = getActiveDev();
+  return `
+    <div class="heading">
+      <div>
+        <h1>屏幕硬件属性与显示校准</h1>
+        <p>管理 D92 真实物理端点的方向、背光、色温配置文件与启动恢复策略</p>
+      </div>
+      <div class="row">
+        <button class="primary" onclick="showToast('屏幕配置已持久化至本地侧边文件')">保存当前配置</button>
+      </div>
+    </div>
+
+    <div class="panel" style="max-width:800px; margin:0 auto;">
+      <div class="row between gap-bottom">
+        <h2>${esc(d.name)}</h2>
+        <span class="badge-tag ok">USB 2.0 直连 · 0x5548:0x1011</span>
+      </div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;">
+        <div>
+          <span class="muted small mono">设备显示名称</span>
+          <input type="text" value="${esc(d.name)}" style="width:100%; margin-top:4px;" onchange="d.name=this.value;">
+        </div>
+        <div>
+          <span class="muted small mono">屏幕物理方向</span>
+          <select style="width:100%; margin-top:4px;" onchange="d.rot=Number(this.value); renderView(); showToast('方向已更新');">
+            <option value="0" ${d.rot===0?'selected':''}>横屏 (0°)</option>
+            <option value="90" ${d.rot===90?'selected':''}>竖屏 (90°)</option>
+            <option value="180" ${d.rot===180?'selected':''}>倒置横屏 (180°)</option>
+            <option value="270" ${d.rot===270?'selected':''}>倒置竖屏 (270°)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="gap-bottom">
+        <span class="muted small mono">背光亮度 (Brightness: ${d.brightness}%)</span>
+        <input type="range" min="10" max="100" value="${d.brightness}" style="width:100%; margin-top:6px; accent-color:var(--amber);" oninput="d.brightness=Number(this.value); renderView();">
+      </div>
+
+      <div class="gap-top" style="border-top:1px solid var(--line); padding-top:16px;">
+        <label class="row" style="cursor:pointer;">
+          <input type="checkbox" checked style="accent-color:var(--cyan);">
+          <span>计算机休眠唤醒后，自动恢复上次显示的 Craft 画面</span>
+        </label>
+      </div>
+    </div>
+  `;
+}
+
+// --- 视图 7：HID 硬件诊断 (Diagnostics) ---
+function renderDiagnostics() {
+  return `
+    <div class="heading">
+      <div>
+        <h1>USB HID 通信协议与链路诊断</h1>
+        <p>实时监听底层报文传输、往返时延抖动与热插拔枚举事件</p>
+      </div>
+      <div class="row">
+        <button class="primary small" onclick="probeHardwareEndpoints()">⚡ 发送探测探针 (Probe Ping)</button>
+      </div>
+    </div>
+
+    <div class="grid-cards gap-bottom">
+      <div class="panel">
+        <span class="muted mono">RTT JITTER</span>
+        <div style="font-size:28px; font-weight:700; color:#34d399; margin:4px 0;">1.2 ms</div>
+        <span class="muted">往返抖动处于正常阈值内</span>
+      </div>
+      <div class="panel">
+        <span class="muted mono">PACKET RATE</span>
+        <div style="font-size:28px; font-weight:700; color:var(--cyan); margin:4px 0;">60 pkts/s</div>
+        <span class="muted">USB 2.0 全速传输链路</span>
+      </div>
+      <div class="panel">
+        <span class="muted mono">LEASE OWNERSHIP</span>
+        <div style="font-size:28px; font-weight:700; color:#fff; margin:4px 0;">0 冲突</div>
+        <span class="muted">多进程排他锁状态健康</span>
+      </div>
+    </div>
+
+    <!-- 协议事件终端 -->
+    <div class="panel" style="background:#05080e; font-family:var(--font-mono); font-size:12px;">
+      <div class="row between" style="border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:12px;">
+        <span style="color:var(--cyan);">PROTOCOL EVENT LOG STREAM</span>
+        <span class="badge-tag ok">LISTENING</span>
+      </div>
+      <div id="diagnostics-log" style="height:220px; overflow-y:auto; line-height:1.8; color:#cbd5e1;">
+        <div><span class="muted">[00:00:01]</span> <span style="color:#38bdf8;">INFO:</span> HID 驱动层就绪，开始枚举 VID=0x5548 PID=0x1011 设备...</div>
+        <div><span class="muted">[00:00:02]</span> <span style="color:#34d399;">SUCCESS:</span> 匹配到 D92 Pro 超宽端点 [dev-1]，UsagePage=0xFFA0, Usage=0x01。</div>
+        <div><span class="muted">[00:00:03]</span> <span style="color:#c084fc;">LEASE:</span> 会话租约已授权：session-lease-01。</div>
+        <div><span class="muted">[00:00:04]</span> <span style="color:#38bdf8;">SYNC:</span> D65 色彩查找表已加载至副屏硬件缓冲区。</div>
+      </div>
+    </div>
+  `;
+}
+
+// --- 视图 8：设计规划说明 (Guide) ---
+function renderGuide() {
+  return `
+    <div class="heading">
+      <div>
+        <h1>DeskDisplay Studio 完整界面规范与规划报告</h1>
+        <p>以物理设备为锚点、以共享资源为中枢、以自适应布局抹平硬件差异</p>
+      </div>
+    </div>
+
+    <div class="grid-cards gap-bottom">
+      <div class="panel">
+        <h3>1. 物理设备模型</h3>
+        <p class="muted gap-top">记录唯一硬件身份（VID/PID/序号）、物理分辨率（960×320、480×480、1920×462）、当前旋转朝向及独占会话租约，避免多进程抢占。</p>
+      </div>
+      <div class="panel">
+        <h3>2. 共享资源生态</h3>
+        <p class="muted gap-top">Craft 原生生态组件、动态 Canvas 水族箱、时钟与实时股票流统一托管，支持按设备分辨率实时筛选，且筛选只隐藏不破坏素材。</p>
+      </div>
+      <div class="panel">
+        <h3>3. 自适应适配算法</h3>
+        <p class="muted gap-top">① 原生尺寸精确匹配（0 留边）<br>② 宽高比误差 ≤ 5% 采用轻微留边完整呈现<br>③ 差异过大时提供居中裁剪或引导进入工作台生成多版本布局。</p>
+      </div>
+    </div>
+  `;
+}
+
+// --- 辅助渲染：主题微缩与真机渲染 ---
+function renderThemePreviewDOM(theme, w, h) {
+  if (theme.id === 1) {
+    return `<div style="width:100%; height:100%; background:linear-gradient(180deg,#062644,#041728 50%,#020b14); position:relative; overflow:hidden;">
+      <div style="position:absolute; top:20%; left:30%; font-size:24px;">🐠</div>
+      <div style="position:absolute; top:55%; left:65%; font-size:18px;">🐟</div>
+      <div style="position:absolute; bottom:8px; right:12px; font-family:var(--font-mono); font-weight:700; color:#fff; font-size:18px;">10:24:38</div>
+    </div>`;
+  } else if (theme.id === 2) {
+    return `<div style="width:100%; height:100%; background:#0B0F17; padding:12px; display:flex; flex-direction:column; justify-content:space-between;">
+      <div class="row between"><span style="color:#fff; font-weight:700;">NVDA</span><span style="color:#10b981; font-weight:700;">+3.61%</span></div>
+      <div style="font-size:24px; font-weight:700; font-family:var(--font-mono); color:#10b981;">$138.25</div>
+      <div style="height:30px; background:rgba(16,185,129,0.15); border-radius:4px; border:1px solid rgba(16,185,129,0.3);"></div>
+    </div>`;
+  } else if (theme.id === 4) {
+    return `<div style="width:100%; height:100%; background:#080705; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;">
+      <div style="font-size:26px; font-family:var(--font-mono); font-weight:900; color:#FED7AA; text-shadow:0 0 12px #F59E0B;">10 : 24</div>
+      <span class="muted small mono">IN-14 NIXIE VACUUM</span>
+    </div>`;
+  }
+  return `<div style="width:100%; height:100%; background:#0c1322; display:grid; place-items:center; color:#38bdf8; font-weight:700;">${esc(theme.name)}</div>`;
+}
+
+function renderWidgetContent(widget) {
+  if (widget.type === 'aquarium') {
+    return `<div style="width:100%; height:100%; background:linear-gradient(180deg,#062644,#020b14); display:flex; align-items:center; justify-content:center; color:#38bdf8;">🐠 水族箱生态</div>`;
+  } else if (widget.type === 'clock') {
+    return `<div style="width:100%; height:100%; background:rgba(0,0,0,0.8); border:1px solid rgba(245,158,11,0.3); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#F59E0B; font-family:var(--font-mono); font-weight:700;">10:24</div>`;
+  }
+  return `<div style="width:100%; height:100%; background:rgba(255,255,255,0.05); display:grid; place-items:center;">${widget.title}</div>`;
+}
+
+function renderTestPattern(w, h) {
+  return `<div style="width:100%; height:100%; display:flex;">
+    <div style="flex:1; background:#fff;"></div>
+    <div style="flex:1; background:#facc15;"></div>
+    <div style="flex:1; background:#38bdf8;"></div>
+    <div style="flex:1; background:#22c55e;"></div>
+    <div style="flex:1; background:#ec4899;"></div>
+    <div style="flex:1; background:#ef4444;"></div>
+    <div style="flex:1; background:#3b82f6;"></div>
+    <div style="flex:1; background:#000;"></div>
+  </div>`;
+}
+
+// --- 交互动作处理函数 ---
+function toggleTestPattern() {
+  testPatternActive = !testPatternActive;
+  $('#test-pattern-btn-text').textContent = testPatternActive ? '退出彩条测试' : '彩条校准测试';
+  renderView();
+  showToast(testPatternActive ? '已开启屏幕彩条校准模式' : '已恢复常规内容渲染');
+}
+
+function syncAllDisplays() {
+  showToast(`已向全部 ${devices.length} 台 D92 端点同步最新渲染指令与时钟信号`);
+}
+
+function rotateDevice(id) {
+  const d = devices.find(x => x.id === id);
+  if (d) {
+    d.rot = (d.rot + 90) % 360;
+    renderView();
+    showToast(`已将 ${d.name} 旋转至 ${d.rot}°`);
+  }
+}
+
+function toggleLease(id) {
+  const d = devices.find(x => x.id === id);
+  if (d) {
+    d.leaseToken = d.leaseToken ? null : `session-lease-${Date.now()}`;
+    renderView();
+    showToast(d.leaseToken ? `已锁定 ${d.name} 的独占租约` : `已释放 ${d.name} 的硬件租约`);
+  }
+}
+
+function updateBrightness(id, val) {
+  const d = devices.find(x => x.id === id);
+  if (d) {
+    d.brightness = Number(val);
+    renderView();
+  }
+}
+
+function addHotplugDevice() {
+  const newId = `dev-${Date.now().toString().slice(-3)}`;
+  devices.push({
+    id: newId,
+    name: `D92 新设备 #${devices.length + 1}`,
+    model: 'D92 Ultra-Wide',
+    w: 960,
+    h: 320,
+    rot: 0,
+    brightness: 80,
+    fps: 60,
+    online: true,
+    running: true,
+    activeTheme: 1,
+    leaseToken: `session-lease-${newId}`,
+    temp: 33.0
+  });
+  renderView();
+  showToast('热插拔检测成功：新 D92 硬件端点已枚举并就绪');
+}
+
+function openStudioWithTheme(themeId, devId) {
+  activeDeviceId = devId || activeDeviceId;
+  const th = getTheme(themeId);
+  studioRatio = th.ratio;
+  goPage('creator');
+  showToast(`已将「${th.name}」载入创作者工作台`);
+}
+
+function deployThemeModal(themeId) {
+  const th = getTheme(themeId);
+  openModal(`
+    <div class="modal-header">
+      <h2>推送到 D92 副屏设备</h2>
+      <button onclick="closeModal()">✕</button>
+    </div>
+    <p class="muted gap-bottom">选择接收「${esc(th.name)}」的硬件副屏：</p>
+    <div style="display:grid; gap:8px;">
+      ${devices.map(d => `
+        <div class="row between" style="padding:12px; background:rgba(0,0,0,0.3); border:1px solid var(--line); border-radius:8px; cursor:pointer;" onclick="confirmDeployTheme('${d.id}', ${th.id})">
+          <div>
+            <strong>${esc(d.name)}</strong>
+            <div class="muted small">${d.model} · ${d.w}×${d.h} · ${d.online ? '在线' : '离线'}</div>
+          </div>
+          <button class="small primary">确认推送 →</button>
+        </div>
+      `).join('')}
+    </div>
+  `, true);
+}
+
+function confirmDeployTheme(devId, themeId) {
+  const d = devices.find(x => x.id === devId);
+  const th = getTheme(themeId);
+  if (d) {
+    d.activeTheme = themeId;
+    closeModal();
+    renderView();
+    showToast(`已成功将「${th.name}」推送到 ${d.name}`);
+  }
+}
+
+function exportPrototypeData() {
+  const data = {
+    version: 'DeskDisplay-Studio-Prototype-V3.2',
+    timestamp: new Date().toISOString(),
+    devices,
+    themes,
+    playlists
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'deskdisplay-studio-design-data.json';
+  a.click();
+  showToast('交互设计稿元数据 JSON 已导出下载');
+}
+
+function probeHardwareEndpoints() {
+  const log = $('#diagnostics-log');
+  if (log) {
+    const time = new Date().toTimeString().split(' ')[0];
+    log.innerHTML += `<div><span class="muted">[${time}]</span> <span style="color:#fbbf24;">PROBE:</span> 手动广播 Ping：${devices.length} 个端点在 1.1ms 内均响应 ACK。</div>`;
+    log.scrollTop = log.scrollHeight;
+  }
+  showToast('硬件探针轮询完成：全端点链路正常');
+}
+
+// 画布简单拖拽模拟
+let isDraggingWidget = false;
+let dragWidgetTarget = null;
+function onStudioWidgetMouseDown(e, widgetId) {
+  const w = studioWidgets.find(x => x.id === widgetId);
+  if (w && !w.locked) {
+    isDraggingWidget = true;
+    dragWidgetTarget = w;
+    selectedWidgetId = widgetId;
+    renderView();
+  }
+}
+function onStudioCanvasMouseMove(e) {
+  if (isDraggingWidget && dragWidgetTarget) {
+    const root = $('#studio-canvas-root');
+    const rect = root.getBoundingClientRect();
+    let newX = Math.round(((e.clientX - rect.left) / rect.width) * 100);
+    let newY = Math.round(((e.clientY - rect.top) / rect.height) * 100);
+    if (studioSnap) {
+      newX = Math.round(newX / 5) * 5;
+      newY = Math.round(newY / 5) * 5;
+    }
+    dragWidgetTarget.x = Math.max(0, Math.min(100 - dragWidgetTarget.w, newX));
+    dragWidgetTarget.y = Math.max(0, Math.min(100 - dragWidgetTarget.h, newY));
+    renderView();
+  }
+}
+function onStudioCanvasMouseUp() {
+  isDraggingWidget = false;
+  dragWidgetTarget = null;
+}
+
+function initDynamicCanvases() {
+  // 占位初始化
+}
+
+// 初始化渲染
+goPage('overview');
+</script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "DeskDisplay Studio",
+  "description": "Next-Gen multi-device manager, WYSIWYG creator workbench, and Craft theme library for D92 smart desk displays.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
